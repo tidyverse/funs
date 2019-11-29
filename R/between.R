@@ -6,7 +6,7 @@
 #' @param left,right Boundary values.
 #' @param bounds One of \verb{[]}, \verb{[)}, \verb{()}, or `()`, which defines whether the
 #'   boundary is inclusive (`[` / `]`) or exclusive (`(` / `)`).
-#' @export A logical vector. The length will be determined by the common
+#' @return A logical vector. The length will be determined by the common
 #'   length of `x`, `left`, and `right`.
 #' @export
 #' @examples

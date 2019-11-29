@@ -14,6 +14,10 @@ between(x, left, right, bounds = "[]")
 \item{bounds}{One of \verb{[]}, \verb{[)}, \verb{()}, or \verb{()}, which defines whether the
 boundary is inclusive (\code{[} / \verb{]}) or exclusive (\code{(} / \verb{)}).}
 }
+\value{
+A logical vector. The length will be determined by the common
+length of \code{x}, \code{left}, and \code{right}.
+}
 \description{
 This is a shortcut for \code{x >= left & x <= right},
 }
