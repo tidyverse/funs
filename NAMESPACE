@@ -2,6 +2,7 @@
 
 export(between)
 export(coalesce)
+export(is_na)
 export(sample)
 import(rlang)
 import(vctrs)
