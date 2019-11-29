@@ -2,5 +2,6 @@
 
 export(between)
 export(coalesce)
+export(sample)
 import(rlang)
 import(vctrs)
