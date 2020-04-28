@@ -10,7 +10,7 @@ grouped_mean(x, na.rm = FALSE)
 grouped means
 }
 \examples{
-xs <- mince(c(1, 2, 3, 4), list(1:2, 3:4))
+xs <- vctrs::new_list_of(vctrs::vec_chop(c(1, 2, 3, 4), list(1:2, 3:4)), numeric())
 grouped_mean(xs)
 
 }
