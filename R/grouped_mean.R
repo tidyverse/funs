@@ -18,14 +18,13 @@ grouped_mean.default <- function(x, na.rm = FALSE) {
 
 #' @export
 grouped_mean.double <- function(x, na.rm = FALSE) {
-  # TODO: do it in C++ instead
-  map_dbl(x, mean.default, na.rm = na.rm)
+  .Call(funs_grouped_mean_dbl, x, na.rm)
 }
 
 #' @export
 grouped_mean.POSIXct <- function(x, na.rm = FALSE) {
   vec_restore(
-    map_dbl(x, ~mean.default(unclass(.x)), na.rm = na.rm),
+    .Call(funs_grouped_mean_dbl, x, na.rm),
     list_ptype_common(x)
   )
 }
