@@ -1,6 +1,10 @@
 
 #' grouped means
 #'
+#' @param x list of vectors
+#' @param na.rm Should NA values be removed
+#'
+#' @return List of means for
 #' @examples
 #' xs <- vctrs::new_list_of(vctrs::vec_chop(c(1, 2, 3, 4), list(1:2, 3:4)), numeric())
 #' grouped_mean(xs)

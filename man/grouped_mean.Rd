@@ -6,6 +6,14 @@
 \usage{
 grouped_mean(x, na.rm = FALSE)
 }
+\arguments{
+\item{x}{list of vectors}
+
+\item{na.rm}{Should NA values be removed}
+}
+\value{
+List of means for
+}
 \description{
 grouped means
 }
