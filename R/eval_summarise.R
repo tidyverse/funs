@@ -1,22 +1,55 @@
-#' @importFrom dplyr peek_mask
-hybrid_functions <- env(
-  empty_env(),
-  mean = function(x, ...) {
-    call <- match.call()
-    mask <- peek_mask()
-    vars <- mask$current_vars()
+column <- function() {
+  structure(list(), class = "column")
+}
 
-    stopifnot(is_symbol(call$x) && as_string(call$x) %in% vars)
-    if (identical(names(call), c("", "x"))) {
-      funs::grouped_mean(x, na.rm = TRUE)
-    } else if(identical(names(call), c("", "x", "na.rm"))) {
-      na.rm <- call$na.rm
-      stopifnot(is_scalar_logical(na.rm))
-      funs::grouped_mean(x, na.rm = na.rm)
+scalar_logical <- function(default) {
+  default
+}
+
+arg_match <- function(spec, given) {
+  if (is_call(spec, "column") && is_symbol(given)) {
+    peek_mask()$resolve(as_string(given))
+  } else if (is_call(spec, "scalar_logical")) {
+    if (is_scalar_logical(given)) {
+      given
+    } else if (is.null(given)) {
+      spec$default
+    } else {
+      abort(":shrug:")
     }
-  },
+  } else {
+    abort(":no:")
+  }
+}
+
+#' @importFrom glue glue
+fun_matcher <- function(fn, grouped_fn, ...) {
+  spec <- as.list(match.call())[-(1:3)]
+  f <- function(...) {
+    call <- as.list(match.call())[-1]
+
+    # match spec and call together
+    names <- names(spec)
+
+    for(name in names) {
+      spec[[name]] <- arg_match(spec[[name]], call[[name]])
+    }
+
+    eval_bare(expr(grouped_fn(!!!spec)))
+  }
+  formals(f) <- formals(grouped_fn)
+  attr(f, "fn") <- fn
+  f
+}
+
+#' @importFrom dplyr peek_mask
+delayedAssign("hybrid_functions", env(
+  empty_env(),
+
+  mean = fun_matcher(mean, grouped_mean, x = column(), na.rm = scalar_logical(default = FALSE)),
+
   "$" = `$`
-)
+))
 
 #' eval summarise
 #'
@@ -26,11 +59,19 @@ hybrid_functions <- env(
 eval_summarise <- function(expr) {
   result <- NULL
   mask <- peek_mask()
+
   if (is_call(expr, "hybrid")) {
     fn <- new_function(mask$args(), node_cadr(expr))
   } else if(is_call(expr, "n", n = 0)){
     fn <- function() list_sizes(mask$get_rows())
   } else {
+    fn_symbol <- node_car(expr)
+    fn_meant <- eval_bare(fn_symbol, caller_env(3))
+    fn_hybrid <- attr(eval_bare(fn_symbol, hybrid_functions), "fn")
+    if (!identical(fn_meant, fn_hybrid)) {
+      abort("No match")
+    }
+
     fn <- new_function(mask$args(), expr, env = hybrid_functions)
   }
 
@@ -45,5 +86,7 @@ eval_summarise <- function(expr) {
       class = "hybrid_result"
     )
   }
+
   result
 }
+
