@@ -4,7 +4,7 @@
 \alias{eval_summarise}
 \title{eval summarise}
 \usage{
-eval_summarise(expr)
+eval_summarise(quo)
 }
 \arguments{
 \item{expr}{...}

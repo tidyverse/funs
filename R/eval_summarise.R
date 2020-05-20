@@ -1,9 +1,17 @@
+dummy <- function(class) {
+  structure(list(), class = class)
+}
+
 column <- function() {
-  structure(list(), class = "column")
+  dummy("column")
 }
 
 scalar_logical <- function(default) {
   default
+}
+
+scalar_integer <- function() {
+  dummy("scalar_integer")
 }
 
 arg_match <- function(spec, given) {
@@ -17,6 +25,14 @@ arg_match <- function(spec, given) {
     } else {
       abort(":shrug:")
     }
+  } else if (is_call(spec, "scalar_integer")) {
+    if (is_scalar_integerish(given)) {
+      as_integer(given)
+    } else {
+      abort("unspecified argument")
+    }
+  } else if (identical(spec, NA)) {
+    given %||% NA
   } else {
     abort(":no:")
   }
@@ -48,6 +64,17 @@ delayedAssign("hybrid_functions", env(
 
   mean = fun_matcher(mean, grouped_mean, x = column(), na.rm = scalar_logical(default = FALSE)),
 
+  sum  = fun_matcher(sum , grouped_sum , x = column(), na.rm = scalar_logical(default = FALSE)),
+  var  = fun_matcher(var , grouped_var , x = column(), na.rm = scalar_logical(default = FALSE)),
+  sd   = fun_matcher(sd  , grouped_sd  , x = column(), na.rm = scalar_logical(default = FALSE)),
+
+  min  = fun_matcher(min , grouped_min , x = column(), na.rm = scalar_logical(default = FALSE)),
+  max  = fun_matcher(max , grouped_max , x = column(), na.rm = scalar_logical(default = FALSE)),
+
+  first = fun_matcher(dplyr::first, grouped_first, x = column(), default = NA),
+  last = fun_matcher(dplyr::last, grouped_last, x = column(), default = NA),
+  nth = fun_matcher(dplyr::nth, grouped_nth, x = column(), n = scalar_integer(), default = NA),
+
   "$" = `$`
 ))
 
@@ -56,7 +83,8 @@ delayedAssign("hybrid_functions", env(
 #' @param expr ...
 #' @param mask ...
 #' @export
-eval_summarise <- function(expr) {
+eval_summarise <- function(quo) {
+  expr <- quo_get_expr(enquo(quo))
   result <- NULL
   mask <- peek_mask()
 
@@ -90,3 +118,19 @@ eval_summarise <- function(expr) {
   result
 }
 
+#' For testing purpuses for now
+#'
+#' @examples
+#' df <- dplyr::group_by(data.frame(x = 1:4, y = c(1,1,2,2)), y)
+#' df %>% jog(mean(x))
+#' df %>% jog(sum(x))
+#' df %>% jog(var(x))
+#' df %>% jog(sd(x))
+#'
+#' df %>% jog(first(x))
+#' @export
+jog <- function(.data, quo) {
+  e <- env(asNamespace("dplyr"), caller = environment(), .data = .data)
+  eval_bare(expr(DataMask$new(.data, caller)), env = e)
+  eval_summarise({{quo}})
+}

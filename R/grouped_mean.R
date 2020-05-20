@@ -1,15 +1,20 @@
-
-#' grouped means
+#' grouped means, ...
 #'
 #' @param x list of vectors
-#' @param na.rm Should NA values be removed
+#' @param na.rm Should NA values be removed ?
 #'
-#' @return List of means for
+#' @return List of means
 #' @examples
 #' xs <- vctrs::new_list_of(vctrs::vec_chop(c(1, 2, 3, 4), list(1:2, 3:4)), numeric())
+#'
 #' grouped_mean(xs)
 #'
+#' grouped_sum(xs)
+#' grouped_var(xs)
+#' grouped_sd(xs)
+#'
 #' @importFrom purrr map map_dbl
+#' @rdname grouped
 #' @export
 grouped_mean <- function(x, na.rm = FALSE) {
   UseMethod("grouped_mean", list_ptype_common(x))
