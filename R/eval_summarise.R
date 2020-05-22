@@ -75,8 +75,21 @@ delayedAssign("hybrid_functions", env(
   last = fun_matcher(dplyr::last, grouped_last, x = column(), default = NA),
   nth = fun_matcher(dplyr::nth, grouped_nth, x = column(), n = scalar_integer(), default = NA),
 
+  lead = fun_matcher(dplyr::lead, grouped_lead, x = column(), n = scalar_integer(), default = NA),
+
   "$" = `$`
 ))
+
+new_hybrid_result <- function(x, sizes = NULL) {
+  # TODO: some checking about sizes, maybe wrt the current mask
+  if (!inherits(x, "hybrid_result")) {
+    x <- structure(
+      list(x = x, sizes = sizes),
+      class = "hybrid_result"
+    )
+  }
+  x
+}
 
 #' eval summarise
 #'
@@ -103,19 +116,8 @@ eval_summarise <- function(quo) {
     fn <- new_function(mask$args(), expr, env = hybrid_functions)
   }
 
-  result <- fn()
+  new_hybrid_result(fn())
 
-  if (!is.null(result) && !inherits(result, "hybrid_result")) {
-    if (vec_size(result) != length(mask$get_rows())) {
-      abort("incompatible sizes")
-    }
-    result <- structure(
-      list(x = result),
-      class = "hybrid_result"
-    )
-  }
-
-  result
 }
 
 #' For testing purpuses for now
