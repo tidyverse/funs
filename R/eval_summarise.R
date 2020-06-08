@@ -135,5 +135,5 @@ eval_summarise <- function(quo) {
 jog <- function(.data, quo) {
   e <- env(asNamespace("dplyr"), caller = environment(), .data = .data)
   eval_bare(expr(DataMask$new(.data, caller)), env = e)
-  eval_summarise({{quo}})
+  eval_summarise(enquo(quo))
 }
