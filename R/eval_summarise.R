@@ -16,7 +16,7 @@ scalar_integer <- function() {
 
 arg_match <- function(spec, given) {
   if (is_call(spec, "column") && is_symbol(given)) {
-    peek_mask()$resolve(as_string(given))
+    dplyr::peek_mask()$resolve(as_string(given))
   } else if (is_call(spec, "scalar_logical")) {
     if (is_scalar_logical(given)) {
       given
@@ -58,7 +58,6 @@ fun_matcher <- function(fn, grouped_fn, ...) {
   f
 }
 
-#' @importFrom dplyr peek_mask
 delayedAssign("hybrid_functions", env(
   empty_env(),
 
@@ -91,15 +90,18 @@ new_hybrid_result <- function(x, sizes = NULL) {
   x
 }
 
+#' @export
+hybrid <- function(x) x
+
 #' eval summarise
 #'
 #' @param expr ...
 #' @param mask ...
 #' @export
 eval_summarise <- function(quo) {
-  expr <- quo_get_expr(enquo(quo))
+  expr <- quo_get_expr(quo)
   result <- NULL
-  mask <- peek_mask()
+  mask <- dplyr::peek_mask()
 
   if (is_call(expr, "hybrid")) {
     fn <- new_function(mask$args(), node_cadr(expr))
@@ -117,7 +119,6 @@ eval_summarise <- function(quo) {
   }
 
   new_hybrid_result(fn())
-
 }
 
 #' For testing purpuses for now
