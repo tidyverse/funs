@@ -36,9 +36,6 @@ double mean_dbl_nakeep(SEXP x) {
   double* p_x = REAL(x);
 
   for (R_xlen_t j = 0; j < n_x; j++, ++p_x) {
-    if (R_IsNA(*p_x)) {
-      return NA_REAL;
-    }
     res += *p_x;
   }
 
