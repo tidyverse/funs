@@ -9,18 +9,18 @@ nth <- function(x, n, default = NA) {
     return(nth_default(x, default))
   }
 
-  if (length(n) != 1 || !is.numeric(n)) {
+  if (!is_integerish(n)) {
     abort("`n` must be a single integer.")
   }
-  n <- trunc(n)
 
-  if (n == 0 || n > vec_size(x) || n < -vec_size(x)) {
+  x_size <- vec_size(x)
+  if (n == 0 || n > x_size || n < -x_size) {
     return(nth_default(x, default))
   }
 
   # Negative values index from RHS
   if (n < 0) {
-    n <- length(x) + n + 1
+    n <- x_size + n + 1
   }
 
   vec_slice(x, n)
@@ -33,5 +33,5 @@ first <- function(x, default = NA) {
 
 #' @export
 last <- function(x, default = NA) {
-  nth(x, n = vec_size(x), default = default)
+  nth(x, n = -1L, default = default)
 }
