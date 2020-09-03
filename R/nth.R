@@ -5,7 +5,9 @@ nth_default <- function(x, default = NA) {
 
 #' @export
 nth <- function(x, n, default = NA) {
-  if (vec_size(x) == 0) {
+  x_size <- vec_size(x)
+
+  if (x_size == 0) {
     return(nth_default(x, default))
   }
 
@@ -13,7 +15,6 @@ nth <- function(x, n, default = NA) {
     abort("`n` must be a single integer.")
   }
 
-  x_size <- vec_size(x)
   if (n == 0 || n > x_size || n < -x_size) {
     return(nth_default(x, default))
   }
