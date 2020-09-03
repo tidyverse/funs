@@ -2,8 +2,11 @@
 
 export(between)
 export(coalesce)
+export(first)
 export(if_else)
 export(is_na)
+export(last)
+export(nth)
 export(sample)
 import(rlang)
 import(vctrs)
