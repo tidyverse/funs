@@ -7,5 +7,5 @@ grouped_var <- function(x, na.rm = FALSE) {
 
 #' @export
 grouped_var.default <- function(x, na.rm = FALSE) {
-  vec_c(!!!map(x, var, na.rm = na.rm))
+  list_of(!!!map(x, var, na.rm = na.rm))
 }

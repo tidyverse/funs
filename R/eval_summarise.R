@@ -16,7 +16,7 @@ scalar_integer <- function() {
 
 arg_match <- function(spec, given) {
   if (is_call(spec, "column") && is_symbol(given)) {
-    dplyr::peek_mask()$resolve(as_string(given))
+    peek_chops()[[as_string(given)]]
   } else if (is_call(spec, "scalar_logical")) {
     if (is_scalar_logical(given)) {
       given
@@ -61,79 +61,32 @@ fun_matcher <- function(fn, grouped_fn, ...) {
 delayedAssign("hybrid_functions", env(
   empty_env(),
 
-  mean = fun_matcher(mean, grouped_mean, x = column(), na.rm = scalar_logical(default = FALSE)),
+  mean = fun_matcher(base::mean, grouped_mean, x = column(), na.rm = scalar_logical(default = FALSE))
 
-  sum  = fun_matcher(sum , grouped_sum , x = column(), na.rm = scalar_logical(default = FALSE)),
-  var  = fun_matcher(var , grouped_var , x = column(), na.rm = scalar_logical(default = FALSE)),
-  sd   = fun_matcher(sd  , grouped_sd  , x = column(), na.rm = scalar_logical(default = FALSE)),
-
-  min  = fun_matcher(min , grouped_min , x = column(), na.rm = scalar_logical(default = FALSE)),
-  max  = fun_matcher(max , grouped_max , x = column(), na.rm = scalar_logical(default = FALSE)),
-
-  first = fun_matcher(dplyr::first, grouped_first, x = column(), default = NA),
-  last = fun_matcher(dplyr::last, grouped_last, x = column(), default = NA),
-  nth = fun_matcher(dplyr::nth, grouped_nth, x = column(), n = scalar_integer(), default = NA),
-
-  lead = fun_matcher(dplyr::lead, grouped_lead, x = column(), n = scalar_integer(), default = NA),
-
-  "$" = `$`
 ))
-
-new_hybrid_result <- function(x, sizes = NULL) {
-  # TODO: some checking about sizes, maybe wrt the current mask
-  if (!inherits(x, "hybrid_result")) {
-    x <- structure(
-      list(x = x, sizes = sizes),
-      class = "hybrid_result"
-    )
-  }
-  x
-}
 
 #' @export
 hybrid <- function(x) x
 
-#' eval summarise
-#'
-#' @param expr ...
-#' @param mask ...
-#' @export
-eval_summarise <- function(quo) {
-  expr <- quo_get_expr(quo)
-  result <- NULL
-  mask <- dplyr::peek_mask()
-
-  if (is_call(expr, "hybrid")) {
-    fn <- new_function(mask$args(), node_cadr(expr))
-  } else if(is_call(expr, "n", n = 0)){
-    fn <- function() list_sizes(mask$get_rows())
-  } else {
-    fn_symbol <- node_car(expr)
-    fn_meant <- eval_bare(fn_symbol, caller_env(3))
-    fn_hybrid <- attr(eval_bare(fn_symbol, hybrid_functions), "fn")
-    if (!identical(fn_meant, fn_hybrid)) {
-      abort("No match")
-    }
-
-    fn <- new_function(mask$args(), expr, env = hybrid_functions)
-  }
-
-  new_hybrid_result(fn())
+peek_chops <- function() {
+  context_peek("chops", "peek_chops()")
+}
+local_chops <- function(x, frame = caller_env()) {
+  context_local("chops", x, frame = frame)
 }
 
-#' For testing purpuses for now
-#'
-#' @examples
-#' df <- dplyr::group_by(data.frame(x = 1:4, y = c(1,1,2,2)), y)
-#' df %>% jog(mean(x))
-#' df %>% jog(sum(x))
-#' df %>% jog(var(x))
-#' df %>% jog(sd(x))
-#'
-#' df %>% jog(first(x))
+
 #' @export
-jog <- function(.data, quo) {
-  e <- env(asNamespace("dplyr"), caller = environment(), .data = .data)
-  eval_bare(expr(DataMask$new(.data, caller)), env = e)
-  eval_summarise(enquo(quo))
+eval_hybrid <- function(quo, chops) {
+  env <- quo_get_env(quo)
+  expr <- quo_get_expr(quo)
+  local_chops(chops)
+
+  fn_symbol <- node_car(expr)
+  fn_meant <- eval_bare(fn_symbol, env)
+  fn_hybrid <- eval_bare(fn_symbol, hybrid_functions)
+  if (!identical(fn_meant, attr(fn_hybrid, "fn"))) return(NULL)
+
+  expr <- node_poke_car(expr, fn_hybrid)
+  eval_bare(expr, env = chops)
 }

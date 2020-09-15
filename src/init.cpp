@@ -1,7 +1,7 @@
 #include "funs.h"
 
 static const R_CallMethodDef CallEntries[] = {
-  {"funs_grouped_mean_dbl", (DL_FUNC)& grouped_mean_dbl, 2},
+  {"funs_grouped_mean_dbl", (DL_FUNC)& funs_grouped_mean_dbl, 2},
 
   {NULL, NULL, 0}
 };

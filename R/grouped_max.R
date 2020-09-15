@@ -7,5 +7,5 @@ grouped_max <- function(x, na.rm = FALSE) {
 
 #' @export
 grouped_max.default <- function(x, na.rm = FALSE) {
-  vec_c(!!!map(x, max, na.rm = na.rm))
+  list_of(!!!map(x, max, na.rm = na.rm))
 }

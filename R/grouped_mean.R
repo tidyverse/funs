@@ -9,11 +9,8 @@
 #'
 #' grouped_mean(xs)
 #'
-#' grouped_sum(xs)
-#' grouped_var(xs)
-#' grouped_sd(xs)
-#'
-#' @importFrom purrr map map_dbl
+#' @importFrom purrr map
+#' @importFrom vctrs list_of
 #' @rdname grouped
 #' @export
 grouped_mean <- function(x, na.rm = FALSE) {
@@ -22,18 +19,10 @@ grouped_mean <- function(x, na.rm = FALSE) {
 
 #' @export
 grouped_mean.default <- function(x, na.rm = FALSE) {
-  vec_c(!!!map(x, mean, na.rm = na.rm))
+  list_of(!!!map(x, mean, na.rm = na.rm))
 }
 
 #' @export
 grouped_mean.double <- function(x, na.rm = FALSE) {
   .Call(funs_grouped_mean_dbl, x, na.rm)
-}
-
-#' @export
-grouped_mean.POSIXct <- function(x, na.rm = FALSE) {
-  vec_restore(
-    .Call(funs_grouped_mean_dbl, x, na.rm),
-    list_ptype_common(x)
-  )
 }

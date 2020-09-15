@@ -49,19 +49,19 @@ double mean_dbl_nakeep(SEXP x) {
   return (double)res;
 }
 
-SEXP grouped_mean_dbl(SEXP x, SEXP na_rm_) {
+SEXP funs_grouped_mean_dbl(SEXP x, SEXP na_rm_) {
   bool na_rm = Rf_asLogical(na_rm_);
   R_xlen_t n = XLENGTH(x);
-  SEXP res = PROTECT(Rf_allocVector(REALSXP, n));
-  double* p_res = REAL(res);
+  SEXP res = PROTECT(Rf_allocVector(VECSXP, n));
+  Rf_setAttrib(res, Rf_install("ptype"), Rf_allocVector(REALSXP, 0));
 
   if (na_rm) {
-    for (R_xlen_t i=0; i < n; i++, ++p_res) {
-      *p_res = mean_dbl_narm(VECTOR_ELT(x, i));
+    for (R_xlen_t i=0; i < n; i++) {
+      SET_VECTOR_ELT(res, i, Rf_ScalarReal(mean_dbl_narm(VECTOR_ELT(x, i))));
     }
   } else {
-    for (R_xlen_t i=0; i < n; i++, ++p_res) {
-      *p_res = mean_dbl_nakeep(VECTOR_ELT(x, i));
+    for (R_xlen_t i=0; i < n; i++) {
+      SET_VECTOR_ELT(res, i, Rf_ScalarReal(mean_dbl_nakeep(VECTOR_ELT(x, i))));
     }
   }
 

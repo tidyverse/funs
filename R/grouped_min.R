@@ -7,5 +7,5 @@ grouped_min <- function(x, na.rm = FALSE) {
 
 #' @export
 grouped_min.default <- function(x, na.rm = FALSE) {
-  vec_c(!!!map(x, min, na.rm = na.rm))
+  list_of(!!!map(x, min, na.rm = na.rm))
 }

@@ -34,15 +34,12 @@ grouped_lead.default <- function(x, n, default = NA) {
 
   i <- -seq_len(n)
 
-  new_hybrid_result(
-    x = vec_c(!!!map(x, function(.x) {
-      vec_c(
-        vec_slice(.x, i),
-        vec_rep(default, n)
-      )
-    })),
-    sizes = list_sizes(x)
-  )
+  list_of(!!!map(x, function(.x) {
+    vec_c(
+      vec_slice(.x, i),
+      vec_rep(default, n)
+    )
+  }))
 }
 
 #' @export
@@ -51,13 +48,10 @@ grouped_lag.default <- function(x, n, default = NA) {
   default <- inputs[[1L]]
   x <- inputs[-1L]
 
-  new_hybrid_result(
-    x = vec_c(!!!map(x, function(.x) {
+  list_of(!!!map(x, function(.x) {
       vec_c(
         vec_rep(default, n),
         vec_slice(.x, seq_len(length(.x) - n))
       )
-    })),
-    sizes = list_sizes(x)
-  )
+    }))
 }

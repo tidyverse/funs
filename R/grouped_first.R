@@ -7,7 +7,7 @@ grouped_first <- function(x, default = NA) {
 
 #' @export
 grouped_first.default <- function(x, default = NA) {
-  vec_c(!!!map(x, first, default = default))
+  list_of(!!!map(x, first, default = default))
 }
 
 #' @rdname grouped
@@ -18,7 +18,7 @@ grouped_last <- function(x, default = NA) {
 
 #' @export
 grouped_last.default <- function(x, default = NA) {
-  vec_c(!!!map(x, last, default = default))
+  list_of(!!!map(x, last, default = default))
 }
 
 #' @rdname grouped
@@ -29,5 +29,5 @@ grouped_nth <- function(x, n, default = NA) {
 
 #' @export
 grouped_nth.default <- function(x, n, default = NA) {
-  vec_c(!!!map(x, nth, n, default = default))
+  list_of(!!!map(x, nth, n, default = default))
 }
