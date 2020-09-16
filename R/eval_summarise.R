@@ -1,72 +1,52 @@
-dummy <- function(class) {
-  structure(list(), class = class)
-}
-
-column <- function() {
-  dummy("column")
-}
-
-scalar_logical <- function(default) {
-  default
-}
-
-scalar_integer <- function() {
-  dummy("scalar_integer")
-}
-
-arg_match <- function(spec, given) {
-  if (is_call(spec, "column") && is_symbol(given)) {
-    peek_chops()[[as_string(given)]]
-  } else if (is_call(spec, "scalar_logical")) {
-    if (is_scalar_logical(given)) {
-      given
-    } else if (is.null(given)) {
-      spec$default
-    } else {
-      abort(":shrug:")
-    }
-  } else if (is_call(spec, "scalar_integer")) {
-    if (is_scalar_integerish(given)) {
-      as_integer(given)
-    } else {
-      abort("unspecified argument")
-    }
-  } else if (identical(spec, NA)) {
-    given %||% NA
-  } else {
-    abort(":no:")
+check_column <- function(x, chops) {
+  if (is_symbol(x)) {
+    chops[[as.character(x)]]
   }
 }
 
-#' @importFrom glue glue
-fun_matcher <- function(fn, grouped_fn, ...) {
-  spec <- as.list(match.call())[-(1:3)]
-  f <- function(...) {
-    call <- as.list(match.call())[-1]
-
-    # match spec and call together
-    names <- names(spec)
-
-    for(name in names) {
-      spec[[name]] <- arg_match(spec[[name]], call[[name]])
-    }
-
-    eval_bare(expr(grouped_fn(!!!spec)))
+check_scalar_logical <- function(x, default = FALSE) {
+  if (is_scalar_logical(x)) {
+    x
+  } else if(is.null(x)) {
+    default
   }
-  formals(f) <- formals(grouped_fn)
-  attr(f, "fn") <- fn
-  f
 }
 
-delayedAssign("hybrid_functions", env(
-  empty_env(),
+match_mean <- function(x, ...) {
+  call <- match.call()
+  chops_env <- peek_chops()
 
-  mean = fun_matcher(base::mean, grouped_mean, x = column(), na.rm = scalar_logical(default = FALSE))
+  x <- check_column(call$x, chops_env)
+  na.rm <- check_scalar_logical(call$na.rm, FALSE)
 
-))
+  if (!is.null(x) && !is.null(na.rm)) {
+    grouped_mean(x, na.rm = na.rm)
+  }
+}
+
+match_n <- function(...) {
+  if (dots_n(...) == 0) {
+    chops_env <- peek_chops()
+
+    new_list_of(
+      as.list(list_sizes(parent.env(chops_env)[[".indices"]])),
+      ptype = integer()
+    )
+  }
+}
+
+match_hybrid <- function(expr) {
+  eval_bare(match.call()$expr, peek_chops())
+}
 
 #' @export
 hybrid <- function(x) x
+
+delayedAssign("hybrid_functions", list(
+  mean = list(target = base::mean, match = match_mean),
+  n = list(target = dplyr::n, match = match_n),
+  hybrid = list(target = hybrid, match = match_hybrid)
+))
 
 peek_chops <- function() {
   context_peek("chops", "peek_chops()")
@@ -75,18 +55,36 @@ local_chops <- function(x, frame = caller_env()) {
   context_local("chops", x, frame = frame)
 }
 
-
 #' @export
 eval_hybrid <- function(quo, chops) {
-  env <- quo_get_env(quo)
   expr <- quo_get_expr(quo)
   local_chops(chops)
 
-  fn_symbol <- node_car(expr)
-  fn_meant <- eval_bare(fn_symbol, env)
-  fn_hybrid <- eval_bare(fn_symbol, hybrid_functions)
-  if (!identical(fn_meant, attr(fn_hybrid, "fn"))) return(NULL)
+  # the function we meant to call
+  fn_meant <- eval_bare(node_car(expr),
+    env(quo_get_env(quo), hybrid = hybrid, `::` = `::`, `:::` = `:::`)
+  )
 
-  expr <- node_poke_car(expr, fn_hybrid)
-  eval_bare(expr, env = chops)
+  # hunt for an hybrid matcher for it
+  fn_hybrid <- NULL
+  for (fn in hybrid_functions) {
+    if (identical(fn_meant, fn$target)) {
+      fn_hybrid <- fn$match
+      break
+    }
+  }
+
+  # if we found one, try to call it, but it will however
+  # perform its own validation of inputs before calling an
+  # actual grouped_*() function
+  res <- NULL
+  if (!is.null(fn_hybrid)) {
+    expr <- node_poke_car(expr, fn_hybrid)
+    res <- eval_bare(expr)
+  }
+
+  if (!is.null(res) && is.null(attr(res, "ptype"))) {
+    attr(res, "ptype") <- vec_ptype_common(!!!res)
+  }
+  res
 }
