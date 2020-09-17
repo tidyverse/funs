@@ -15,8 +15,11 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports: 
     rlang,
-    vctrs
-RoxygenNote: 7.1.0
+    vctrs,
+    purrr,
+    glue,
+    magrittr
+RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
     withr
