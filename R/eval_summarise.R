@@ -58,6 +58,8 @@ local_chops <- function(x, frame = caller_env()) {
 #' @export
 eval_hybrid <- function(quo, chops) {
   expr <- quo_get_expr(quo)
+  if (!is_call(expr)) return(NULL)
+
   local_chops(chops)
 
   # the function we meant to call
