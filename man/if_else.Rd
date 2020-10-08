@@ -14,9 +14,9 @@ if_else(condition, true, false, na = NULL)
 \item{na}{Values to use for \code{NA}.}
 }
 \value{
-A vector with the common type of \code{true}, \code{false}, and \code{na}; and the common
-size of \code{condition}, \code{true}, \code{false}, and \code{na}. Where \code{condition} is \code{TRUE},
-the result comes from \code{true}, where \code{FALSE} it comes from \code{false}.
+A vector with the common type of \code{true}, \code{false}, and \code{na}; and the size of
+\code{condition}. Where \code{condition} is \code{TRUE}, the result comes from \code{true},
+where \code{FALSE} it comes from \code{false}.
 }
 \description{
 \code{if_else()} returns a vector filled with elements selected from \code{true},
