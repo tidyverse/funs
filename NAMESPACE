@@ -2,8 +2,10 @@
 
 export(between)
 export(coalesce)
+export(cumany)
 export(if_else)
 export(is_na)
 export(sample)
 import(rlang)
 import(vctrs)
+useDynLib(funs, .registration = TRUE)
