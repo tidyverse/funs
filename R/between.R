@@ -21,7 +21,7 @@ between <- function(x, left, right, bounds = "[]") {
     "[)" = list(`>=`, `<`),
     "(]" = list(`>`, `<=`),
     "()" = list(`>`, `<`),
-    abort("Unknown `bounds` specfiication.")
+    abort("Unknown `bounds` specification.")
   )
 
   bounds[[1]](vec_compare(x, left), 0) &
