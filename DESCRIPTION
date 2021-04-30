@@ -16,7 +16,8 @@ Roxygen: list(markdown = TRUE)
 Imports: 
     rlang,
     vctrs
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
-    testthat (>= 2.1.0),
+    testthat (>= 3.0.0),
     withr
+Config/testthat/edition: 3
