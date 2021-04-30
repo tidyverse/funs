@@ -5,9 +5,9 @@ nth_default <- function(x, default = NA) {
 
 #' @export
 nth <- function(x, n, default = NA) {
-  x_size <- vec_size(x)
+  size <- vec_size(x)
 
-  if (x_size == 0) {
+  if (size == 0) {
     return(nth_default(x, default))
   }
 
@@ -15,13 +15,13 @@ nth <- function(x, n, default = NA) {
     abort("`n` must be a single integer.")
   }
 
-  if (n == 0 || n > x_size || n < -x_size) {
+  if (n == 0 || n > size || n < -size) {
     return(nth_default(x, default))
   }
 
   # Negative values index from RHS
   if (n < 0) {
-    n <- x_size + n + 1
+    n <- size + n + 1
   }
 
   vec_slice(x, n)
