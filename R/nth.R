@@ -33,10 +33,6 @@ nth_default <- function(x, default = NA) {
 nth <- function(x, n, default = NA) {
   size <- vec_size(x)
 
-  if (size == 0) {
-    return(nth_default(x, default))
-  }
-
   if (!is_integerish(n, n = 1L, finite = TRUE)) {
     abort("`n` must be a single integer.")
   }
