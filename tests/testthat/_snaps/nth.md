@@ -18,17 +18,21 @@
       Input must be a vector, not a function.
     Code
       x <- 1:4
-      nth(x, 5) <- 5
-    Error <rlang_error>
-      `n` is out of bounds
-    Code
-      nth(x, -5) <- 5
-    Error <rlang_error>
-      `n` is out of bounds
-    Code
       nth(x, 1) <- 1:2
     Error <vctrs_error_assert_size>
       `value` must have size 1, not size 2.
+    Code
+      nth(x, "a") <- 2
+    Error <rlang_error>
+      `n` must be a single integer.
+    Code
+      nth(x, 1) <- "a"
+    Error <vctrs_error_incompatible_type>
+      Can't convert `value` <character> to match type of `x` <integer>.
+    Code
+      nth(x, 5) <- "a"
+    Error <vctrs_error_incompatible_type>
+      Can't convert `value` <character> to match type of `x` <integer>.
     Code
       lst <- list(1, 2)
       nth(lst, 1) <- 3:4

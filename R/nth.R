@@ -77,18 +77,20 @@ last <- function(x, default = NA) {
     abort("`n` must be a single integer.")
   }
 
-  if (n == 0 || n > size || n < -size) {
-    abort("`n` is out of bounds")
-  }
-
   vec_assert(value, size = 1L)
+  value <- vec_cast(value, x, x_arg = "value", to_arg = "x")
+
+  if (n == 0 || n > size || n < -size) {
+    return(x)
+  }
 
   # Negative values index from RHS
   if (n < 0) {
     n <- size + n + 1
   }
 
-  vec_slice(x, n) <- vec_cast(value, x, x_arg = "value", to_arg = "x")
+  vec_slice(x, n) <- value
+
   x
 }
 

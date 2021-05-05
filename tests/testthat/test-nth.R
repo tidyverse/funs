@@ -37,6 +37,11 @@ test_that("nth<-()", {
 
   last(x) <- 6
   expect_equal(x, c(5, 6))
+
+  expect_error({
+    nth(x, 5) <- 7
+  }, NA)
+  expect_equal(x, c(5, 6))
 })
 
 test_that("nth<-()", {
@@ -63,9 +68,10 @@ test_that("nth() errors", {
     first(last)
 
     x <- 1:4
-    nth(x, 5) <- 5
-    nth(x, -5) <- 5
     nth(x, 1) <- 1:2
+    nth(x, "a") <- 2
+    nth(x, 1) <- "a"
+    nth(x, 5) <- "a"
 
     lst <- list(1, 2)
     nth(lst, 1) <- 3:4
