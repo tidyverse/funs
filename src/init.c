@@ -8,12 +8,12 @@
  */
 
 /* .Call calls */
-extern SEXP funs_cumall(SEXP);
-extern SEXP funs_cumany(SEXP);
+extern SEXP funs_incremental_any(SEXP);
+extern SEXP funs_incremental_all(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-  {"funs_cumall", (DL_FUNC) &funs_cumall, 1},
-  {"funs_cumany", (DL_FUNC) &funs_cumany, 1},
+  {"funs_incremental_any", (DL_FUNC) &funs_incremental_any, 1},
+  {"funs_incremental_all", (DL_FUNC) &funs_incremental_all, 1},
   {NULL, NULL, 0}
 };
 

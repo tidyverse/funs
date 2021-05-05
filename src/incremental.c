@@ -2,7 +2,7 @@
 #include <R.h>
 #include <Rinternals.h>
 
-SEXP funs_cumany(SEXP x) {
+SEXP funs_incremental_any(SEXP x) {
   R_xlen_t n = XLENGTH(x);
   SEXP out = PROTECT(Rf_allocVector(LGLSXP, n));
 
@@ -40,7 +40,7 @@ SEXP funs_cumany(SEXP x) {
   return out;
 }
 
-SEXP funs_cumall(SEXP x) {
+SEXP funs_incremental_all(SEXP x) {
   R_xlen_t n = XLENGTH(x);
   SEXP out = PROTECT(Rf_allocVector(LGLSXP, n));
   int* p_x = LOGICAL(x);

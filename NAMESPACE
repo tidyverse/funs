@@ -2,9 +2,9 @@
 
 export(between)
 export(coalesce)
-export(cumall)
-export(cumany)
 export(if_else)
+export(incremental_all)
+export(incremental_any)
 export(is_na)
 export(sample)
 import(rlang)
