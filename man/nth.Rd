@@ -4,6 +4,9 @@
 \alias{nth}
 \alias{first}
 \alias{last}
+\alias{nth<-}
+\alias{first<-}
+\alias{last<-}
 \title{Extract the first, last or nth value from a vector}
 \usage{
 nth(x, n, default = NA)
@@ -11,6 +14,12 @@ nth(x, n, default = NA)
 first(x, default = NA)
 
 last(x, default = NA)
+
+nth(x, n) <- value
+
+first(x) <- value
+
+last(x) <- value
 }
 \arguments{
 \item{x}{A vector}

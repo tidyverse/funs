@@ -60,3 +60,41 @@ first <- function(x, default = NA) {
 last <- function(x, default = NA) {
   nth(x, n = -1L, default = default)
 }
+
+#' @rdname nth
+#' @export
+`nth<-` <- function(x, n, value) {
+  size <- vec_size(x)
+
+  if (!is_integerish(n, n = 1L, finite = TRUE)) {
+    abort("`n` must be a single integer.")
+  }
+
+  if (n == 0 || n > size || n < -size) {
+    abort("`n` is out of bounds")
+  }
+
+  vec_assert(value, size = 1L)
+  params <- vec_cast_common(x = x, value = value)
+  x <- params$x
+
+  # Negative values index from RHS
+  if (n < 0) {
+    n <- size + n + 1
+  }
+
+  vec_slice(x, n) <- params$value
+  x
+}
+
+#' @rdname nth
+#' @export
+`first<-` <- function(x, value) {
+  `nth<-`(x, 1, value)
+}
+
+#' @rdname nth
+#' @export
+`last<-` <- function(x, value) {
+  `nth<-`(x, -1, value)
+}

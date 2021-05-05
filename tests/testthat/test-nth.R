@@ -24,6 +24,36 @@ test_that("nth() works for size 0", {
   expect_identical(last(integer()), NA_integer_)
 })
 
+test_that("nth<-()", {
+  x <- c(1, 2)
+  nth(x, 1) <- 3
+  expect_equal(x, c(3, 2))
+
+  nth(x, -1) <- 4
+  expect_equal(x, c(3, 4))
+
+  first(x) <- 5
+  expect_equal(x, c(5, 4))
+
+  last(x) <- 6
+  expect_equal(x, c(5, 6))
+})
+
+test_that("nth<-()", {
+  x <- data.frame(x = c(1, 2))
+  nth(x, 1) <- data.frame(x = c(3))
+  expect_equal(x, data.frame(x = c(3, 2)))
+
+  nth(x, -1) <- data.frame(x = c(4))
+  expect_equal(x, data.frame(x = c(3, 4)))
+
+  first(x) <- data.frame(x = c(5))
+  expect_equal(x, data.frame(x = c(5, 4)))
+
+  last(x) <- data.frame(x = c(6))
+  expect_equal(x, data.frame(x = c(5, 6)))
+})
+
 test_that("nth() errors", {
   expect_snapshot(error = TRUE, {
     nth(1:10, 12, default = "")
@@ -31,5 +61,18 @@ test_that("nth() errors", {
     nth(1:10, 1.3)
 
     first(last)
+
+    x <- 1:4
+    nth(x, 5) <- 5
+    nth(x, -5) <- 5
+    nth(x, 1) <- 1:2
+
+    lst <- list(1, 2)
+    nth(lst, 1) <- 3:4
+
+    df <- data.frame(x = 1:3)
+    first(df) <- data.frame(x = 5:6)
+    first(df) <- data.frame(x = "4")
+    first(df) <- data.frame(y = 5)
   })
 })
