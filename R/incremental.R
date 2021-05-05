@@ -6,6 +6,7 @@
 #'
 #' - For `incremental_any()` and `incremental_all()` : a logical vector
 #'
+#' @rdname incremental
 #' @export
 incremental_any <- function(x) {
   vec_assert(x, logical())

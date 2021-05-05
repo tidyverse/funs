@@ -2,9 +2,12 @@
 % Please edit documentation in R/incremental.R
 \name{incremental_any}
 \alias{incremental_any}
+\alias{incremental_all}
 \title{Incremental summaries}
 \usage{
 incremental_any(x)
+
+incremental_all(x)
 }
 \arguments{
 \item{x}{for \code{incremental_any()} and \code{incremental_all()} A logical vector}
