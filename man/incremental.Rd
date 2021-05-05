@@ -3,11 +3,23 @@
 \name{incremental_any}
 \alias{incremental_any}
 \alias{incremental_all}
+\alias{incremental_sum}
+\alias{incremental_prod}
+\alias{incremental_min}
+\alias{incremental_max}
 \title{Incremental summaries}
 \usage{
 incremental_any(x)
 
 incremental_all(x)
+
+incremental_sum(x)
+
+incremental_prod(x)
+
+incremental_min(x)
+
+incremental_max(x)
 }
 \arguments{
 \item{x}{for \code{incremental_any()} and \code{incremental_all()} A logical vector}

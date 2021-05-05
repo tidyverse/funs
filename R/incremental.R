@@ -19,3 +19,27 @@ incremental_all <- function(x) {
   vec_assert(x, logical())
   .Call(funs_incremental_all, x)
 }
+
+#' @rdname incremental
+#' @export
+incremental_sum <- function(x) {
+  cumsum(x)
+}
+
+#' @rdname incremental
+#' @export
+incremental_prod <- function(x) {
+  cumprod(x)
+}
+
+#' @rdname incremental
+#' @export
+incremental_min <- function(x) {
+  cummin(x)
+}
+
+#' @rdname incremental
+#' @export
+incremental_max <- function(x) {
+  cummax(x)
+}
