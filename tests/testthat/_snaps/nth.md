@@ -42,7 +42,10 @@
     Code
       first(df) <- data.frame(x = "4")
     Error <vctrs_error_incompatible_type>
-      Can't combine `x$x` <integer> and `value$x` <character>.
+      Can't convert `value$x` <character> to match type of `x$x` <integer>.
     Code
       first(df) <- data.frame(y = 5)
+    Error <vctrs_error_cast_lossy_dropped>
+      Can't convert from <data.frame<y:double>> to <data.frame<x:integer>> due to loss of precision.
+      Dropped variables: `y`
 

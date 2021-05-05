@@ -82,15 +82,13 @@ last <- function(x, default = NA) {
   }
 
   vec_assert(value, size = 1L)
-  params <- vec_cast_common(x = x, value = value)
-  x <- params$x
 
   # Negative values index from RHS
   if (n < 0) {
     n <- size + n + 1
   }
 
-  vec_slice(x, n) <- params$value
+  vec_slice(x, n) <- vec_cast(value, x, x_arg = "value", to_arg = "x")
   x
 }
 
