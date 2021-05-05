@@ -27,15 +27,16 @@ last(x) <- value
 \item{n}{A single integer specifying the position. Negative integers index from the end (i.e. -1 will return the last value in the vector).}
 
 \item{default}{A default value to use if the position does not exist in \code{x}}
+
+\item{value}{A size 1 vector of type compatible with \code{x}}
 }
 \value{
-A vector of size 1 and the same type as \code{x}
+A vector of size 1 and the same type as \code{x}.
 }
 \description{
 Extract the first, last or nth value from a vector
 }
 \examples{
-
 first(month.name)
 last(month.name)
 nth(month.name, 2)
@@ -49,6 +50,13 @@ lst <- list(a = 1, b = letters, c = data.frame(x = 1, y = 2))
 first(lst)
 last(lst)
 nth(lst, 2)
+
+# assignment versions
+numbers <- c(1, 2, 3)
+first(numbers) <- 4
+last(numbers) <- 5
+nth(numbers, 2) <- 6
+numbers
 
 }
 \seealso{

@@ -8,11 +8,11 @@ nth_default <- function(x, default = NA) {
 #' @param x A vector
 #' @param n A single integer specifying the position. Negative integers index from the end (i.e. -1 will return the last value in the vector).
 #' @param default A default value to use if the position does not exist in `x`
+#' @param value A size 1 vector of type compatible with `x`
 #'
-#' @return A vector of size 1 and the same type as `x`
+#' @return A vector of size 1 and the same type as `x`.
 #'
 #' @examples
-#'
 #' first(month.name)
 #' last(month.name)
 #' nth(month.name, 2)
@@ -26,6 +26,13 @@ nth_default <- function(x, default = NA) {
 #' first(lst)
 #' last(lst)
 #' nth(lst, 2)
+#'
+#' # assignment versions
+#' numbers <- c(1, 2, 3)
+#' first(numbers) <- 4
+#' last(numbers) <- 5
+#' nth(numbers, 2) <- 6
+#' numbers
 #'
 #' @seealso [vctrs::vec_slice()] which these functions are wrappers of.
 #'
