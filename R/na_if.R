@@ -21,12 +21,15 @@
 #'
 #' @export
 na_if <- function(x, y) {
-  if (vec_is(y, ptype = y)) {
-    predicate <- function(x) vec_in(x, y, needles_arg = "y", haystack_arg = "x")
-  } else {
-    predicate <- as_function(y)
+  if (is_formula(y)) {
+    y <- as_function(y)
   }
-
+  predicate <- if (is_function(y)) {
+    y
+  } else {
+    function(x) vec_in(x, y, needles_arg = "y", haystack_arg = "x")
+  }
   vec_slice(x, predicate(x)) <- NA
+
   x
 }
