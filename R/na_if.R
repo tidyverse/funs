@@ -3,9 +3,9 @@
 #' @param x A vector to modify
 #' @param y What to replace with `NA`. Can be:
 #'
+#' - A function applied to `x` returning a logical vector of the same size as `x`
 #' - A vector whose type matches `x`, in that case [vctrs::vec_in()] is used
 #'   to determine which values are replace with `NA`.
-#' - A predicate function applied to `x` returning a logical vector, integer or character vector. See [vctrs::vec_slice<-()] for details.
 #'
 #' @examples
 #' x <- 1:10
@@ -24,12 +24,13 @@ na_if <- function(x, y) {
   if (is_formula(y)) {
     y <- as_function(y)
   }
-  predicate <- if (is_function(y)) {
-    y
+
+  if (is_function(y)) {
+    selected <- vec_assert(y(x), ptype = logical(), size = vec_size(x))
   } else {
-    function(x) vec_in(x, y, needles_arg = "y", haystack_arg = "x")
+    selected <- vec_in(x, y, needles_arg = "y", haystack_arg = "x")
   }
-  vec_slice(x, predicate(x)) <- NA
+  vec_slice(x, selected) <- NA
 
   x
 }

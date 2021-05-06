@@ -11,9 +11,9 @@ na_if(x, y)
 
 \item{y}{What to replace with \code{NA}. Can be:
 \itemize{
+\item A function applied to \code{x} returning a logical vector of the same size as \code{x}
 \item A vector whose type matches \code{x}, in that case \code{\link[vctrs:vec_match]{vctrs::vec_in()}} is used
 to determine which values are replace with \code{NA}.
-\item A predicate function applied to \code{x} returning a logical vector, integer or character vector. See \code{\link[vctrs:vec_slice]{vctrs::vec_slice<-()}} for details.
 }}
 }
 \description{
