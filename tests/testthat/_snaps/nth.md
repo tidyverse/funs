@@ -34,6 +34,10 @@
     Error <vctrs_error_incompatible_type>
       Can't convert `value` <character> to match type of `x` <integer>.
     Code
+      nth(x, 5) <- 7
+    Warning <warning>
+      Unchanged `x` as `n` is out of bounds
+    Code
       lst <- list(1, 2)
       nth(lst, 1) <- 3:4
     Error <vctrs_error_assert_size>
