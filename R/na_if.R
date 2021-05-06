@@ -1,9 +1,11 @@
 #' Convert values to NA
 #'
 #' @param x A vector to modify
-#' @param y Values to replace with `NA`, or a predicate function
+#' @param y What to replace with `NA`. Can be:
 #'
-#' @seealso [vctrs::vec_in()] is used when `y` is a vector
+#' - A vector whose type matches `x`, in that case [vctrs::vec_in()] is used
+#'   to determine which values are replace with `NA`.
+#' - A predicate function applied to `x` returning a logical vector, integer or character vector. See [vctrs::vec_slice<-()] for details.
 #'
 #' @examples
 #' x <- 1:10
@@ -19,8 +21,7 @@
 #'
 #' @export
 na_if <- function(x, y) {
-
-  if (vec_is(y)) {
+  if (vec_is(y, ptype = y)) {
     predicate <- function(x) vec_in(x, y, needles_arg = "y", haystack_arg = "x")
   } else {
     predicate <- as_function(y)

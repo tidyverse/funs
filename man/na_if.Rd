@@ -9,7 +9,12 @@ na_if(x, y)
 \arguments{
 \item{x}{A vector to modify}
 
-\item{y}{Values to replace with \code{NA}, or a predicate function}
+\item{y}{What to replace with \code{NA}. Can be:
+\itemize{
+\item A vector whose type matches \code{x}, in that case \code{\link[vctrs:vec_match]{vctrs::vec_in()}} is used
+to determine which values are replace with \code{NA}.
+\item A predicate function applied to \code{x} returning a logical vector, integer or character vector. See \code{\link[vctrs:vec_slice]{vctrs::vec_slice<-()}} for details.
+}}
 }
 \description{
 Convert values to NA
@@ -26,7 +31,4 @@ na_if(x, ~ .x > 5)
 df <- data.frame(x = 1:10, y = 1:10)
 na_if(df, ~ .x$y > 8)
 
-}
-\seealso{
-\code{\link[vctrs:vec_match]{vctrs::vec_in()}} is used when \code{y} is a vector
 }
