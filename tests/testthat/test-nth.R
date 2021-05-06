@@ -78,7 +78,7 @@ test_that("nth() errors", {
 
     df <- data.frame(x = 1:3)
     first(df) <- data.frame(x = 5:6)
-    first(df) <- data.frame(x = "4")
+    first(df) <- data.frame(x = "4", stringsAsFactors = FALSE)
     first(df) <- data.frame(y = 5)
   })
 })

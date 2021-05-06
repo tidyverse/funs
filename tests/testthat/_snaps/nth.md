@@ -44,7 +44,7 @@
     Error <vctrs_error_assert_size>
       `value` must have size 1, not size 2.
     Code
-      first(df) <- data.frame(x = "4")
+      first(df) <- data.frame(x = "4", stringsAsFactors = FALSE)
     Error <vctrs_error_incompatible_type>
       Can't convert `value$x` <character> to match type of `x$x` <integer>.
     Code
