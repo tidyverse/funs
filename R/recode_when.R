@@ -14,7 +14,14 @@ recode_when <- function(x, ...) {
 
   for (i in seq_along(dots)) {
     f <- dots[[i]]
-    lhs <- eval_bare(f_lhs(f), env = env(f_env(f), default = default_sentinel))
+    lhs <- eval_bare(f_lhs(f), env = env(
+      f_env(f),
+      default = default_sentinel,
+      when = function(f_when){
+        f_when <- as_function(f_when)
+        structure(f_when(x), class = "funs:::selected")
+      }
+    ))
     rhs <- eval_bare(f_rhs(f), env = f_env(f))
 
     if (identical(lhs, default_sentinel)) {
@@ -22,10 +29,12 @@ recode_when <- function(x, ...) {
         abort("`default ~` can only be used in the last formula")
       }
       selected <- !touched
+    } else if (inherits(lhs, "funs:::selected")) {
+      selected <- unclass(lhs)
     } else {
       selected <- vec_in(x, lhs)
-      touched <- touched | selected
     }
+    touched <- touched | selected
 
     vec_slice(x, selected) <- rhs
   }
