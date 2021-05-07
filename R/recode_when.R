@@ -55,6 +55,8 @@ when <- function(what, with) {
     selected <- vec_assert(what(x), ptype = logical(), size = vec_size(x), arg = arg)
   } else if(identical(what, default_sentinel)) {
     selected <- !patch_env$touched
+  } else if (is.logical(what)) {
+    selected <- what
   } else {
     selected <- vec_in(x, what, needles_arg = arg, haystack_arg = "x")
   }
