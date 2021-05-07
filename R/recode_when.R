@@ -67,7 +67,7 @@ when <- function(what, with) {
 #' @export
 patch <- function(x, ...) {
   step <- 0L
-  default <- default_sentinel
+  caller <- caller_env()
   env <- environment()
   context_local("patch_env", env)
   dots <- enexprs(...)
@@ -76,7 +76,7 @@ patch <- function(x, ...) {
   touched <- logical(length = n)
   for (i in seq_along(dots)) {
     step <- i
-    results <- eval_bare(dots[[i]], env = env)
+    results <- eval_bare(dots[[i]], env = env(caller, default = default_sentinel))
 
     vec_slice(x, results$selected) <- results$replacement
 
