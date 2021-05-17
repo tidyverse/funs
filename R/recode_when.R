@@ -78,7 +78,19 @@ patch <- function(x, ...) {
     step <- i
     results <- eval_bare(dots[[i]], env = env(caller, default = default_sentinel))
 
-    vec_slice(x, results$selected) <- results$replacement
+    size_replacement <- vec_size(results$replacement)
+    if (size_replacement == 1L) {
+      vec_slice(x, results$selected) <- results$replacement
+    } else if (size_replacement == n){
+      vec_slice(x, results$selected) <- vec_slice(results$replacement, results$selected)
+    } else {
+      # TODO: maybe check this is a when() call and extract the with=
+      abort(c(
+        glue("Incompatible replacement size in `..{ i }`"),
+        x = glue("`..{i}` should be size 1 or { n }, not { size_replacement }."),
+        i = glue("`..{i}` is `{as_label(dots[[i]])}`. ")
+      ))
+    }
 
     touched <- touched | results$selected
   }
