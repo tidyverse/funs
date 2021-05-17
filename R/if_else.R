@@ -8,9 +8,9 @@
 #' @param true,false Values to use for `TRUE` and `FALSE` values of `condition`.
 #' @param na Values to use for `NA`.
 #' @return
-#' A vector with the common type of `true`, `false`, and `na`; and the common
-#' size of `condition`, `true`, `false`, and `na`. Where `condition` is `TRUE`,
-#' the result comes from `true`, where `FALSE` it comes from `false`.
+#' A vector with the common type of `true`, `false`, and `na`; and the size of
+#' `condition`. Where `condition` is `TRUE`, the result comes from `true`,
+#' where `FALSE` it comes from `false`.
 #'
 #' @export
 #' @examples
@@ -22,20 +22,28 @@
 #' y <- as.Date("2020-01-01")
 #' if_else(x > 2, NA, y + x)
 if_else <- function(condition, true, false, na = NULL) {
-  ptype <- vec_ptype_common(true = true, false = false, na = na)
-  size <- vec_size_common(condition = condition, true = true, false = false, na = na)
-
   vec_assert(condition, logical())
-  condition <- vec_recycle(condition, size)
-  true <- vec_recycle(vec_cast(true, ptype), size)
-  false <- vec_recycle(vec_cast(false, ptype), size)
-  na <- vec_recycle(vec_cast(na, ptype), size)
 
-  out <- vec_init(true, size)
-  vec_slice(out, condition) <- vec_slice(true, condition)
-  vec_slice(out, !condition) <- vec_slice(false, !condition)
-  if (!is.null(na)) {
-    vec_slice(out, is.na(condition)) <- vec_slice(na, is.na(condition))
+  # output size from `condition`
+  size <- vec_size(condition)
+
+  # output type from `true`/`false`/`na`
+  ptype <- vec_ptype_common(true = true, false = false, na = na)
+
+  args <- vec_recycle_common(true = true, false = false, na = na, .size = size)
+  args <- vec_cast_common(!!!args, .to = ptype)
+
+  out <- vec_init(ptype, size)
+
+  loc_true <- condition
+  loc_false <- !condition
+
+  out <- vec_assign(out, loc_true, vec_slice(args$true, loc_true))
+  out <- vec_assign(out, loc_false, vec_slice(args$false, loc_false))
+
+  if (!is_null(na)) {
+    loc_na <- vec_equal_na(condition)
+    out <- vec_assign(out, loc_na, vec_slice(args$na, loc_na))
   }
 
   out
