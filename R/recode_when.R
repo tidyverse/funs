@@ -42,7 +42,7 @@ recode_when <- function(x, ...) {
 }
 
 #' @export
-when <- function(what, with) {
+when <- function(what, ...) {
   patch_env <- context_peek("patch_env", "when()", "`patch()`")
   x <- patch_env$x
   step <- patch_env$step
@@ -61,7 +61,15 @@ when <- function(what, with) {
     selected <- vec_in(x, what, needles_arg = arg, haystack_arg = "x")
   }
 
-  list(selected = selected, replacement = with)
+  replacement <- if (is.data.frame(x)) {
+    df <- vctrs::data_frame(...)
+    x[names(df)] <- df
+    x
+  } else {
+    ..1
+  }
+
+  list(selected = selected, replacement = replacement)
 }
 
 #' @export
