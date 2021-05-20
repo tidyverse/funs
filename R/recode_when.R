@@ -42,7 +42,7 @@ recode_when <- function(x, ...) {
 }
 
 #' @export
-when <- function(what, with) {
+when <- function(what, ...) {
   patch_env <- context_peek("patch_env", "when()", "`patch()` or `case()`")
   x <- patch_env$x
   step <- patch_env$step
@@ -63,7 +63,13 @@ when <- function(what, with) {
     selected <- vec_in(x, what, needles_arg = arg, haystack_arg = "x")
   }
 
-  list(selected = selected, replacement = with)
+  dots <- list2(...)
+  replacement <- if (length(dots) && !is.null(names(dots))) {
+    vctrs::new_data_frame(dots)
+  } else {
+    dots[[1]]
+  }
+  list(selected = selected, replacement = replacement)
 }
 
 #' @export
@@ -73,12 +79,15 @@ patch <- function(x, ...) {
   env <- environment()
   context_local("patch_env", env)
   dots <- enexprs(...)
+  mask <- if (is.data.frame(x)) {
+    as_data_mask(x)
+  }
 
   n <- vec_size(x)
   touched <- logical(length = n)
   for (i in seq_along(dots)) {
     step <- i
-    results <- eval_bare(dots[[i]], env = env(caller, default = default_sentinel))
+    results <- eval_tidy(dots[[i]], data = mask, env = env(caller, default = default_sentinel))
 
     size_replacement <- vec_size(results$replacement)
 
