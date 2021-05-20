@@ -65,10 +65,10 @@ test_that("nth() errors", {
     x <- 1:4
     nth(x, 1) <- 1:2
     nth(x, "a") <- 2
+    nth(x, 5) <- 7
 
     nth(x, 1) <- "a"
     nth(x, 5) <- "a"
-    nth(x, 5) <- 7
 
     lst <- list(1, 2)
     nth(lst, 1) <- 3:4

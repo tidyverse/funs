@@ -81,8 +81,7 @@ last <- function(x, default = NA) {
   value <- vec_cast(value, x, x_arg = "value", to_arg = "x")
 
   if (n == 0 || n > size || n < -size) {
-    warn("Unchanged `x` as `n` is out of bounds")
-    return(x)
+    abort("`n` is out of bounds")
   }
 
   # Negative values index from RHS

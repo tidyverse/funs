@@ -26,6 +26,10 @@
     Error <rlang_error>
       `n` must be a single integer.
     Code
+      nth(x, 5) <- 7
+    Error <rlang_error>
+      `n` is out of bounds
+    Code
       nth(x, 1) <- "a"
     Error <vctrs_error_incompatible_type>
       Can't convert `value` <character> to match type of `x` <integer>.
@@ -33,10 +37,6 @@
       nth(x, 5) <- "a"
     Error <vctrs_error_incompatible_type>
       Can't convert `value` <character> to match type of `x` <integer>.
-    Code
-      nth(x, 5) <- 7
-    Warning <warning>
-      Unchanged `x` as `n` is out of bounds
     Code
       lst <- list(1, 2)
       nth(lst, 1) <- 3:4
