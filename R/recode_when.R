@@ -89,11 +89,12 @@ patch <- function(x, ...) {
     results <- eval_bare(dots[[i]], env = env(caller, default = default_sentinel))
 
     size_replacement <- vec_size(results$replacement)
-    # TODO: deal with selected here as in case(when())
+
+    selected <- results$selected & !touched
     if (size_replacement == 1L) {
-      vec_slice(x, results$selected) <- results$replacement
+      vec_slice(x, selected) <- results$replacement
     } else if (size_replacement == n){
-      vec_slice(x, results$selected) <- vec_slice(results$replacement, results$selected)
+      vec_slice(x, selected) <- vec_slice(results$replacement, selected)
     } else {
       # TODO: maybe check this is a when() call and extract the with=
       abort(c(
@@ -103,7 +104,7 @@ patch <- function(x, ...) {
       ))
     }
 
-    touched <- touched | results$selected
+    touched <- touched | selected
   }
 
   x
