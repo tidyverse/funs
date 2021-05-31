@@ -74,15 +74,30 @@ last <- function(x, default = NA) {
   size <- vec_size(x)
 
   if (!is_integerish(n, n = 1L, finite = TRUE)) {
-    abort("`n` must be a single integer.")
+    bullets <- "`n` must be a single integer."
+    if (is_integerish(n, finite = TRUE) && length(n) > 1L) {
+      bullets <- c(bullets,
+        x = glue("`n` is an integer vector of size { length(n) }.")
+      )
+    }
+    if (!is_integerish(n, finite = TRUE)) {
+      bullets <- c(bullets,
+        x = glue("`n` is an object of type <{ vec_ptype_full(n) }>.")
+      )
+    }
+    abort(bullets)
+  }
+  if (n == 0 || n > size || n < -size) {
+    abort(c(
+      "`n` is out of bounds.",
+      x = glue("`n = {n}` cannot be used to modify a vector of size {size}."),
+      i = glue("Use a positive integer in [1,{size}] to select from the left."),
+      i = glue("Use a negative integer in [-{size}, -1] to select from the right.")
+    ))
   }
 
   vec_assert(value, size = 1L)
   value <- vec_cast(value, x, x_arg = "value", to_arg = "x")
-
-  if (n == 0 || n > size || n < -size) {
-    abort("`n` is out of bounds")
-  }
 
   # Negative values index from RHS
   if (n < 0) {
