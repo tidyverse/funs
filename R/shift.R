@@ -88,7 +88,7 @@ vec_shift_c <- function(x, n, size, lag, default) {
 }
 
 with_order <- function(.x, .order_by, .size, .fn, ...) {
-  vec_assert(.order_by, size = .size)
+  vec_assert(.order_by, size = .size, arg = "order_by")
   o <- vec_order(.order_by)
   x <- vec_slice(.x, o)
   out <- .fn(x, ...)
