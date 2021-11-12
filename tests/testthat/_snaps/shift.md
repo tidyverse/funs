@@ -1,40 +1,85 @@
 # shift() errors
 
     Code
-      x <- 1:10
-      lead(x, -1)
-    Error <rlang_error>
-      `n` must be positive.
+      (expect_error(lead(1:10, -1)))
+    Output
+      <error/rlang_error>
+      Error in `lead()`: `n` must be positive.
     Code
-      lag(x, -1)
-    Error <rlang_error>
-      `n` must be positive.
+      (expect_error(lag(1:10, -1)))
+    Output
+      <error/rlang_error>
+      Error in `lag()`: `n` must be positive.
     Code
-      lead(x, "a")
-    Error <vctrs_error_incompatible_type>
-      Can't convert `n` <character> to <integer>.
+      (expect_error(lead(1:10, 1:2)))
+    Output
+      <error/rlang_error>
+      Error in `lead()`:
+        `n` must be a single positive number.
+      Caused by error in `vec_assert()`:
+        `n` must have size 1, not size 2.
     Code
-      lag(x, "a")
-    Error <vctrs_error_incompatible_type>
-      Can't convert `n` <character> to <integer>.
+      (expect_error(lag(1:10, 1:2)))
+    Output
+      <error/rlang_error>
+      Error in `lag()`:
+        `n` must be a single positive number.
+      Caused by error in `vec_assert()`:
+        `n` must have size 1, not size 2.
     Code
-      lead(x, 1, order_by = 1)
-    Error <vctrs_error_assert_size>
-      `order_by` must have size 10, not size 1.
+      (expect_error(lead(1:10, "a")))
+    Output
+      <error/rlang_error>
+      Error in `lead()`:
+        `n` must be a single positive number.
+      Caused by error in `stop_vctrs()`:
+        Can't convert `n` <character> to <integer>.
     Code
-      lag(x, 1, order_by = 1)
-    Error <vctrs_error_assert_size>
-      `order_by` must have size 10, not size 1.
+      (expect_error(lag(1:10, "a")))
+    Output
+      <error/rlang_error>
+      Error in `lag()`:
+        `n` must be a single positive number.
+      Caused by error in `stop_vctrs()`:
+        Can't convert `n` <character> to <integer>.
     Code
-      lag(c("1", "2", "3"), default = FALSE)
-    Error <vctrs_error_incompatible_type>
-      Can't convert `default` <logical> to <character>.
+      (expect_error(lead(1:10, 1, order_by = 1)))
+    Output
+      <error/rlang_error>
+      Error in `lead()`:
+        `order_by` must match the size of `x`.
+      Caused by error in `vec_assert()`:
+        `order_by` must have size 10, not size 1.
     Code
-      lag(c("1", "2", "3"), default = character())
-    Error <vctrs_error_assert_size>
-      `default` must have size 1, not size 0.
+      (expect_error(lag(1:10, 1, order_by = 1)))
+    Output
+      <error/rlang_error>
+      Error in `lag()`:
+        `order_by` must match the size of `x`.
+      Caused by error in `vec_assert()`:
+        `order_by` must have size 10, not size 1.
     Code
-      lag(c("1", "2", "3"), default = c("a", "b"))
-    Error <vctrs_error_assert_size>
-      `default` must have size 1, not size 2.
+      (expect_error(lag(c("1", "2", "3"), default = FALSE)))
+    Output
+      <error/rlang_error>
+      Error in `lag()`:
+        `default` must be a scalar compatible with <character>.
+      Caused by error in `stop_vctrs()`:
+        Can't convert `default` <logical> to <character>.
+    Code
+      (expect_error(lag(c("1", "2", "3"), default = character())))
+    Output
+      <error/rlang_error>
+      Error in `lag()`:
+        `default` must be a scalar compatible with <character>.
+      Caused by error in `vec_assert()`:
+        `default` must have size 1, not size 0.
+    Code
+      (expect_error(lag(c("1", "2", "3"), default = c("a", "b"))))
+    Output
+      <error/rlang_error>
+      Error in `lag()`:
+        `default` must be a scalar compatible with <character>.
+      Caused by error in `vec_assert()`:
+        `default` must have size 1, not size 2.
 

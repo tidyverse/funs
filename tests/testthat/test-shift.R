@@ -61,20 +61,43 @@ test_that("lag(n=0) is no-op", {
 })
 
 test_that("shift() errors", {
-  expect_snapshot(error = TRUE, {
-    x <- 1:10
-    lead(x, -1)
-    lag(x, -1)
+  expect_snapshot({
+    (expect_error(
+      lead(1:10, -1)
+    ))
+    (expect_error(
+      lag(1:10, -1)
+    ))
+    (expect_error(
+      lead(1:10, 1:2)
+    ))
+    (expect_error(
+      lag(1:10, 1:2)
+    ))
 
-    lead(x, "a")
-    lag(x, "a")
+    (expect_error(
+      lead(1:10, "a")
+    ))
+    (expect_error(
+      lag(1:10, "a")
+    ))
 
-    lead(x, 1, order_by = 1)
-    lag(x, 1, order_by = 1)
+    (expect_error(
+      lead(1:10, 1, order_by = 1)
+    ))
+    (expect_error(
+      lag(1:10, 1, order_by = 1)
+    ))
 
-    lag(c("1", "2", "3"), default = FALSE)
-    lag(c("1", "2", "3"), default = character())
-    lag(c("1", "2", "3"), default = c("a", "b"))
+    (expect_error(
+      lag(c("1", "2", "3"), default = FALSE)
+    ))
+    (expect_error(
+      lag(c("1", "2", "3"), default = character())
+    ))
+    (expect_error(
+      lag(c("1", "2", "3"), default = c("a", "b"))
+    ))
 
     # lag(ts(1:10))
   })
