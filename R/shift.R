@@ -1,7 +1,7 @@
 #' @export
 shift <- function(x, n = 1L, default = NULL, order_by = NULL) {
   n <- as_scalar_integer(n)
-  shift_impl(x, n = n, default = default, order_by = NULL)
+  shift_impl(x, n = n, default = default, order_by = order_by)
 }
 
 #' @export

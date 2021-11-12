@@ -43,6 +43,14 @@
       Caused by error in `stop_vctrs()`:
         Can't convert `n` <character> to <integer>.
     Code
+      (expect_error(shift(1:10, "a")))
+    Output
+      <error/rlang_error>
+      Error in `shift()`:
+        `n` must be a single positive number.
+      Caused by error in `stop_vctrs()`:
+        Can't convert `n` <character> to <integer>.
+    Code
       (expect_error(lead(1:10, 1, order_by = 1)))
     Output
       <error/rlang_error>
@@ -55,6 +63,14 @@
     Output
       <error/rlang_error>
       Error in `lag()`:
+        `order_by` must match the size of `x`.
+      Caused by error in `vec_assert()`:
+        `order_by` must have size 10, not size 1.
+    Code
+      (expect_error(shift(1:10, 1, order_by = 1)))
+    Output
+      <error/rlang_error>
+      Error in `shift()`:
         `order_by` must match the size of `x`.
       Caused by error in `vec_assert()`:
         `order_by` must have size 10, not size 1.

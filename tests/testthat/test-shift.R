@@ -81,12 +81,18 @@ test_that("shift() errors", {
     (expect_error(
       lag(1:10, "a")
     ))
+    (expect_error(
+      shift(1:10, "a")
+    ))
 
     (expect_error(
       lead(1:10, 1, order_by = 1)
     ))
     (expect_error(
       lag(1:10, 1, order_by = 1)
+    ))
+    (expect_error(
+      shift(1:10, 1, order_by = 1)
     ))
 
     (expect_error(
