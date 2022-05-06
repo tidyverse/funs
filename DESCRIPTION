@@ -14,8 +14,8 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Imports: 
-    rlang,
-    vctrs
+    rlang (>= 1.0.2),
+    vctrs (>= 0.4.1)
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0),
