@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
 # funs
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/tidyverse/funs/workflows/R-CMD-check/badge.svg)](https://github.com/tidyverse/funs/actions)
+[![R-CMD-check](https://github.com/tidyverse/funs/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tidyverse/funs/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/tidyverse/funs/branch/main/graph/badge.svg)](https://app.codecov.io/gh/tidyverse/funs?branch=main)
 <!-- badges: end -->
 
 The goal of funs is to ...
