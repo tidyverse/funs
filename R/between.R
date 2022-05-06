@@ -1,4 +1,4 @@
-#' Find all values within a range
+#' Detect if values fall within a range
 #'
 #' This is essentially a shortcut for `x >= left & x <= right`, but it also
 #' retains the size of `x` and casts both `left` and `right` to the type of

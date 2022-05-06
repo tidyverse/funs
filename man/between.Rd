@@ -2,7 +2,7 @@
 % Please edit documentation in R/between.R
 \name{between}
 \alias{between}
-\title{Find all values within a range}
+\title{Detect if values fall within a range}
 \usage{
 between(x, left, right, ..., bounds = "[]")
 }
