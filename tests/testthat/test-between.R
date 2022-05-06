@@ -41,3 +41,9 @@ test_that("validates `bounds`", {
     between(1:2, 1, 1, bounds = 1)
   })
 })
+
+test_that("dots must be empty", {
+  expect_snapshot(error = TRUE, {
+    between(1, 0, 1, "[]")
+  })
+})

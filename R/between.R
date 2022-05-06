@@ -4,6 +4,8 @@
 #' retains the size of `x` and casts both `left` and `right` to the type of
 #' `x` before making the comparison.
 #'
+#' @inheritParams rlang::args_dots_empty
+#'
 #' @param x A vector
 #' @param left,right Boundary values. Both `left` and `right` are recycled to
 #'   the size of `x` and are cast to the type of `x`.
@@ -18,7 +20,9 @@
 #'
 #' today <- Sys.Date()
 #' between(today, today - 1, today + 1)
-between <- function(x, left, right, bounds = "[]") {
+between <- function(x, left, right, ..., bounds = "[]") {
+  check_dots_empty0(...)
+
   args <- list(left = left, right = right)
   args <- vec_cast_common(!!!args, .to = x)
   args <- vec_recycle_common(!!!args, .size = vec_size(x))

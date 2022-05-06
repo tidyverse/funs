@@ -45,3 +45,14 @@
       Error in `arg_match0()`:
       ! `bounds` must be a string or character vector.
 
+# dots must be empty
+
+    Code
+      between(1, 0, 1, "[]")
+    Condition
+      Error in `between()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * ..1 = "[]"
+      i Did you forget to name an argument?
+
