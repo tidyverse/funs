@@ -2,15 +2,17 @@
 % Please edit documentation in R/between.R
 \name{between}
 \alias{between}
-\title{Find all values within a range}
+\title{Detect if values fall within a range}
 \usage{
-between(x, left, right, bounds = "[]")
+between(x, left, right, ..., bounds = "[]")
 }
 \arguments{
 \item{x}{A vector}
 
 \item{left, right}{Boundary values. Both \code{left} and \code{right} are recycled to
 the size of \code{x} and are cast to the type of \code{x}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 
 \item{bounds}{One of \verb{"[]"}, \verb{"[)"}, \verb{"(]"}, or \verb{"()"},
 which defines whether the boundary is inclusive (with \code{[} or \verb{]}) or
