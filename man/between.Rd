@@ -7,19 +7,22 @@
 between(x, left, right, bounds = "[]")
 }
 \arguments{
-\item{x}{A vector of values}
+\item{x}{A vector}
 
-\item{left, right}{Boundary values.}
+\item{left, right}{Boundary values. Both \code{left} and \code{right} are recycled to
+the size of \code{x} and are cast to the type of \code{x}.}
 
-\item{bounds}{One of \verb{[]}, \verb{[)}, \verb{()}, or \verb{()}, which defines whether the
-boundary is inclusive (\code{[} / \verb{]}) or exclusive (\code{(} / \verb{)}).}
+\item{bounds}{One of \verb{"[]"}, \verb{"[)"}, \verb{"(]"}, or \verb{"()"},
+which defines whether the boundary is inclusive (with \code{[} or \verb{]}) or
+exclusive (with \code{(} or \verb{)}).}
 }
 \value{
-A logical vector. The length will be determined by the common
-length of \code{x}, \code{left}, and \code{right}.
+A logical vector the same size as \code{x}.
 }
 \description{
-This is a shortcut for \code{x >= left & x <= right},
+This is essentially a shortcut for \code{x >= left & x <= right}, but it also
+retains the size of \code{x} and casts both \code{left} and \code{right} to the type of
+\code{x} before making the comparison.
 }
 \examples{
 between(c(1:10, NA), 4, 6)
