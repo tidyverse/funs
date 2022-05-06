@@ -4,7 +4,7 @@
 \name{funs-package}
 \alias{funs}
 \alias{funs-package}
-\title{funs: Useful vectorised function}
+\title{funs: Useful Vectorised Functions}
 \description{
 What the package does (one paragraph).
 }

@@ -1,5 +1,5 @@
 Package: funs
-Title: Useful vectorised function
+Title: Useful Vectorised Functions
 Version: 0.0.0.9000
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@rstudio.com", role = c("aut", "cre")),
