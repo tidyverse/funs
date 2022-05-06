@@ -20,17 +20,11 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/tidyverse/funs/branch/main/graph/badge.svg)](https://app.codecov.io/gh/tidyverse/funs?branch=main)
 <!-- badges: end -->
 
-The goal of funs is to ...
+The goal of funs is to provide a useful set of vectorized functions that complement other tools in the tidyverse.
 
 ## Installation
 
-You can install the released version of funs from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("funs")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
