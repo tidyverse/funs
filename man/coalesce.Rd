@@ -10,10 +10,10 @@ coalesce(..., .ptype = NULL, .size = NULL)
 \item{...}{One or more vectors.}
 
 \item{.ptype}{The type to cast the vectors in \code{...} to. If \code{NULL}, the
-vectors will be cast to a common type, which is consistent with SQL.}
+vectors will be cast to their common type, which is consistent with SQL.}
 
 \item{.size}{The size to recycle the vectors in \code{...} to. If \code{NULL}, the
-vectors will be recycled to a common size.}
+vectors will be recycled to their common size.}
 }
 \description{
 Given a set of vectors, \code{coalesce()} finds the first non-missing value at
@@ -25,24 +25,10 @@ same thing for SQL \code{NULL}s.
 x <- sample(c(1:5, NA, NA, NA))
 coalesce(x, 0L)
 
-# In cases like the one above, you may want to require that the return
-# type has the same type as the first input (here, `x`) rather than the
-# common type of all inputs. To do that, set the `.ptype` argument to a
-# vector with your preferred type.
-typeof(coalesce(x, 0))
-typeof(coalesce(x, 0, .ptype = x))
-
 # The equivalent to a missing value in a list is NULL
 coalesce(list(1, 2, NULL), list(NA))
 
-# data frames are coalesced, row by row, and the output will contain
-# columns that appear in any input
-coalesce(
-  data.frame(x = c(1, NA)),
-  data.frame(x = c(NA, 2), y = 3)
-)
-
-# Or match together a complete vector from missing pieces
+# Or generate a complete vector from partially missing pieces
 y <- c(1, 2, NA, NA, 5)
 z <- c(NA, NA, 3, 4, 5)
 coalesce(y, z)
