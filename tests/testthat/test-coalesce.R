@@ -7,6 +7,46 @@ test_that("terminates early if no missing", {
   expect_equal(coalesce(1:3, 1:3), 1:3)
 })
 
+test_that("only updates entirely missing matrix rows", {
+  x <- c(
+    1, NA,
+    NA, NA
+  )
+  x <- matrix(x, nrow = 2, byrow = TRUE)
+
+  y <- c(
+    2, 2,
+    NA, 1
+  )
+  y <- matrix(y, nrow = 2, byrow = TRUE)
+
+  expect <- c(
+    1, NA,
+    NA, 1
+  )
+  expect <- matrix(expect, nrow = 2, byrow = TRUE)
+
+  expect_identical(coalesce(x, y), expect)
+})
+
+test_that("only updates entirely missing data frame rows", {
+  x <- data_frame(x = c(1, NA), y = c(NA, NA))
+  y <- data_frame(x = c(2, NA), y = c(TRUE, TRUE))
+
+  expect <- data_frame(x = c(1, NA), y = c(NA, TRUE))
+
+  expect_identical(coalesce(x, y), expect)
+})
+
+test_that("only updates entirely missing rcrd observations", {
+  x <- new_rcrd(list(x = c(1, NA), y = c(NA, NA)))
+  y <- new_rcrd(list(x = c(2, NA), y = c(TRUE, TRUE)))
+
+  expect <- new_rcrd(list(x = c(1, NA), y = c(NA, TRUE)))
+
+  expect_identical(coalesce(x, y), expect)
+})
+
 test_that("`.ptype` overrides the common type (#64)", {
   x <- c(1L, NA)
   expect_identical(coalesce(x, 99, .ptype = x), c(1L, 99L))
