@@ -1,6 +1,7 @@
 #' @keywords internal
 #' @import vctrs
 #' @import rlang
+#' @importFrom purrr discard
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage

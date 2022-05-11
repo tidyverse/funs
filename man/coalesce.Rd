@@ -4,15 +4,21 @@
 \alias{coalesce}
 \title{Find first non-missing element}
 \usage{
-coalesce(...)
+coalesce(..., .ptype = NULL, .size = NULL)
 }
 \arguments{
-\item{...}{One or more vectors. Vectors are recycled to a common length
-and cast to a common type.}
+\item{...}{One or more vectors.}
+
+\item{.ptype}{The type to cast the vectors in \code{...} to. If \code{NULL}, the
+vectors will be cast to their common type, which is consistent with SQL.}
+
+\item{.size}{The size to recycle the vectors in \code{...} to. If \code{NULL}, the
+vectors will be recycled to their common size.}
 }
 \description{
 Given a set of vectors, \code{coalesce()} finds the first non-missing value at
-each position. It's inspired by the SQL \verb{COALESCE`` function which does the same thing for SQL }NULL`s.
+each position. It's inspired by the SQL \code{COALESCE} function which does the
+same thing for SQL \code{NULL}s.
 }
 \examples{
 # Use a single value to replace all missing values
@@ -22,14 +28,7 @@ coalesce(x, 0L)
 # The equivalent to a missing value in a list is NULL
 coalesce(list(1, 2, NULL), list(NA))
 
-# data frames are coalesced, row by row, and the output will contain
-# columns that appear in any input
-coalesce(
-  data.frame(x = c(1, NA)),
-  data.frame(x = c(NA, 2), y = 3)
-)
-
-# Or match together a complete vector from missing pieces
+# Or generate a complete vector from partially missing pieces
 y <- c(1, 2, NA, NA, 5)
 z <- c(NA, NA, 3, 4, 5)
 coalesce(y, z)
