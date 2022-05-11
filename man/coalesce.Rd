@@ -4,20 +4,33 @@
 \alias{coalesce}
 \title{Find first non-missing element}
 \usage{
-coalesce(...)
+coalesce(..., .ptype = NULL, .size = NULL)
 }
 \arguments{
-\item{...}{One or more vectors. Vectors are recycled to a common length
-and cast to a common type.}
+\item{...}{One or more vectors.}
+
+\item{.ptype}{The type to cast the vectors in \code{...} to. If \code{NULL}, the
+vectors will be cast to a common type, which is consistent with SQL.}
+
+\item{.size}{The size to recycle the vectors in \code{...} to. If \code{NULL}, the
+vectors will be recycled to a common size.}
 }
 \description{
 Given a set of vectors, \code{coalesce()} finds the first non-missing value at
-each position. It's inspired by the SQL \verb{COALESCE`` function which does the same thing for SQL }NULL`s.
+each position. It's inspired by the SQL \code{COALESCE} function which does the
+same thing for SQL \code{NULL}s.
 }
 \examples{
 # Use a single value to replace all missing values
 x <- sample(c(1:5, NA, NA, NA))
 coalesce(x, 0L)
+
+# In cases like the one above, you may want to require that the return
+# type has the same type as the first input (here, `x`) rather than the
+# common type of all inputs. To do that, set the `.ptype` argument to a
+# vector with your preferred type.
+typeof(coalesce(x, 0))
+typeof(coalesce(x, 0, .ptype = x))
 
 # The equivalent to a missing value in a list is NULL
 coalesce(list(1, 2, NULL), list(NA))

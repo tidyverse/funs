@@ -1,16 +1,26 @@
 #' Find first non-missing element
 #'
 #' Given a set of vectors, `coalesce()` finds the first non-missing value at
-#' each position. It's inspired by the SQL `COALESCE`` function which does the
+#' each position. It's inspired by the SQL `COALESCE` function which does the
 #' same thing for SQL `NULL`s.
 #'
-#' @param ... One or more vectors. Vectors are recycled to a common length
-#'   and cast to a common type.
+#' @param ... One or more vectors.
+#' @param .ptype The type to cast the vectors in `...` to. If `NULL`, the
+#'   vectors will be cast to a common type, which is consistent with SQL.
+#' @param .size The size to recycle the vectors in `...` to. If `NULL`, the
+#'   vectors will be recycled to a common size.
 #' @export
 #' @examples
 #' # Use a single value to replace all missing values
 #' x <- sample(c(1:5, NA, NA, NA))
 #' coalesce(x, 0L)
+#'
+#' # In cases like the one above, you may want to require that the return
+#' # type has the same type as the first input (here, `x`) rather than the
+#' # common type of all inputs. To do that, set the `.ptype` argument to a
+#' # vector with your preferred type.
+#' typeof(coalesce(x, 0))
+#' typeof(coalesce(x, 0, .ptype = x))
 #'
 #' # The equivalent to a missing value in a list is NULL
 #' coalesce(list(1, 2, NULL), list(NA))
@@ -33,17 +43,16 @@
 #'   c(NA, NA, 3, 4, 5)
 #' )
 #' coalesce(!!!vecs)
-coalesce <- function(...) {
+coalesce <- function(..., .ptype = NULL, .size = NULL) {
   args <- list2(...)
+  list_check_all_vectors(args, arg = "")
 
-  n_args <- vec_size(args)
-
-  if (n_args == 0L) {
-    return(NULL)
+  if (length(args) == 0L) {
+    abort("`...` must contain at least one input.")
   }
 
-  args <- vec_cast_common(!!! args)
-  args <- vec_recycle_common(!!! args)
+  args <- vec_cast_common(!!!args, .to = .ptype)
+  args <- vec_recycle_common(!!!args, .size = .size)
 
   out <- args[[1L]]
   args <- args[-1L]
@@ -55,7 +64,7 @@ coalesce <- function(...) {
       break
     }
 
-    vec_slice(out, is_na) <- vec_slice(arg, is_na)
+    out <- vec_assign(out, is_na, vec_slice(arg, is_na))
   }
 
   out
