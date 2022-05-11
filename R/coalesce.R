@@ -45,7 +45,7 @@
 #' coalesce(!!!vecs)
 coalesce <- function(..., .ptype = NULL, .size = NULL) {
   args <- list2(...)
-  list_check_all_vectors(args, arg = "")
+  args <- discard(args, is.null)
 
   if (length(args) == 0L) {
     abort("`...` must contain at least one input.")

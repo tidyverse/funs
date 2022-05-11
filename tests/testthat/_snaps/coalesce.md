@@ -6,7 +6,7 @@
       Error in `coalesce()`:
       ! Can't recycle `..2` (size 2) to size 1.
 
-# must have at least one value
+# must have at least one non-`NULL` vector
 
     Code
       coalesce()
@@ -14,23 +14,15 @@
       Error in `coalesce()`:
       ! `...` must contain at least one input.
 
+---
+
+    Code
+      coalesce(NULL, NULL)
+    Condition
+      Error in `coalesce()`:
+      ! `...` must contain at least one input.
+
 # inputs must be vectors
-
-    Code
-      coalesce(NULL)
-    Condition
-      Error in `coalesce()`:
-      ! `..1` must be a vector, not NULL.
-
----
-
-    Code
-      coalesce(1, NULL)
-    Condition
-      Error in `coalesce()`:
-      ! `..2` must be a vector, not NULL.
-
----
 
     Code
       coalesce(1, environment())

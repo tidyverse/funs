@@ -60,21 +60,23 @@ test_that("`.size` overrides the common size", {
   })
 })
 
-test_that("must have at least one value", {
+test_that("must have at least one non-`NULL` vector", {
   expect_snapshot(error = TRUE, {
     coalesce()
   })
+  expect_snapshot(error = TRUE, {
+    coalesce(NULL, NULL)
+  })
+})
+
+test_that("`NULL`s are discarded (#80)", {
+  expect_identical(
+    coalesce(c(1, NA, NA), NULL, c(1, 2, NA), NULL, 3),
+    c(1, 2, 3)
+  )
 })
 
 test_that("inputs must be vectors", {
-  # In particular, disallow `NULL` as an input, which can break the type/size
-  # invariant if `.ptype` or `.size` are supplied
-  expect_snapshot(error = TRUE, {
-    coalesce(NULL)
-  })
-  expect_snapshot(error = TRUE, {
-    coalesce(1, NULL)
-  })
   expect_snapshot(error = TRUE, {
     coalesce(1, environment())
   })
