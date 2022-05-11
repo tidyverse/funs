@@ -67,39 +67,39 @@ numeric vector the same size as x.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 3 4 5 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 1 3 5 4</span>
 <span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 90  7 44 50 36 96 87 88 67 57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 73 46  2 98 18 66 83 86 45 30</span>
 <span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  9  4  6  1  8 10  1  5  7  8 10  4  6  3  7  9 10  3 10  1  1  3  2  5  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26]  1  9  3  1 10  6  4  4  2  3 10  4  2  3  3  1  7  6  9  7  2  2  6  4 10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51]  4  5  5  6  7  7  8  8 10  6  2  8  8  9  9  3  9  3  5  4  5  4  1  4  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  1  2  4  3  8  9  7  2  5  8  5  2  4 10  2  5  7  8 10  9  1  4 10  1  6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  3  2 10  1  3  8  7  4  3  9  4  8  4  1  9  3  1  8  3  2  3  5 10  5  3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26]  4  2  7  9  8  3  8  5  2  4  2  7  6  8  5  6  1  1  1  8  2  3  9  2  4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51]  8 10  6  1  7  1  4  1  5  8  9  7  5  5  5  9 10  7  6  2  6  6  4 10  3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  2  7  3  7  9 10  1 10  4  5  7  4  4  9  5  1  8  2  7  1  2  6  2  4  6</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># samples of data frames are taken row wise, making it easy to</span></span>
 <span class="r-in"><span class="co"># do bootstrapping</span></span>
 <span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="va">iris</span>, <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           6.2         2.9          4.3         1.3 versicolor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2           5.2         2.7          3.9         1.4 versicolor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           6.0         2.2          5.0         1.5  virginica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4.4         3.2          1.3         0.2     setosa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5.1         2.5          3.0         1.1 versicolor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6           5.4         3.4          1.7         0.2     setosa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7           6.0         2.2          4.0         1.0 versicolor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8           5.4         3.9          1.3         0.4     setosa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9           4.8         3.0          1.4         0.1     setosa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10          6.0         2.9          4.5         1.5 versicolor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           4.6         3.1          1.5         0.2     setosa</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           6.7         3.0          5.2         2.3  virginica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           7.4         2.8          6.1         1.9  virginica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           7.2         3.2          6.0         1.8  virginica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           6.9         3.1          5.1         2.3  virginica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6           7.9         3.8          6.4         2.0  virginica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7           4.6         3.1          1.5         0.2     setosa</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8           5.8         2.7          5.1         1.9  virginica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9           4.8         3.0          1.4         0.3     setosa</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10          6.1         2.8          4.0         1.3 versicolor</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Unlike base::sample(), this is safe to use with inputs of length 1</span></span>
 <span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5 4 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3 4 5</span>
 <span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4 5</span>
 <span class="r-in"><span class="fu">sample</span><span class="op">(</span><span class="fl">5</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-in"><span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">5</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 5 4 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 1 4 5 3</span>
 </code></pre></div>
     </div>
   </div>
